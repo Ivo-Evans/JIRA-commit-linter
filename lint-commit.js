@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const commitMessage = fs.readFileSync(process.env.HUSKY_GIT_PARAMS).toString()
 const checks = require('./checks')
-const tags = ['[TEST-1]', '[TEST-2]'] // you would actually get these from package.json
+const tags = ['[TEST-1]', '[TEST-2]'] // you would actually get these from package.json, and only get one, [TEST-n]
 
 require('colors')
 const tick = "✓".bold.green
@@ -11,6 +11,7 @@ const cross = "x".bold.red
 let exitCode = 0
 const results = [""]
 const reconstructedMessage = []
+const { noCase } = require('change-case')
 
 function testRunner(checks) {
     checkContent({checks, results, reconstructedMessage})
@@ -21,7 +22,7 @@ function testRunner(checks) {
 
 function checkContent({checks, results, reconstructedMessage}) {
     checks.forEach(check => {
-        const checkName = check.name.split("-").join(" ") // camelCase to no case with package
+        const checkName = noCase(check.name)
         try {
             const verdict = check(commitMessage, tags)
             if (!verdict.verdict) {
@@ -51,9 +52,8 @@ function checkOrder({commitMessage, reconstructedMessage}) {
     results.push('---')
     results.push("")
     results.push(`${cross} Final commit does not match`)
-    results.push('\texpected vs actual:')
-    results.push(`\t${newMessage.trim().green}`)
-    results.push(`\t${commitMessage.trim().red}`)
+    results.push(`\texpected |${newMessage.trim().green}`)
+    results.push(`\tactual   |${commitMessage.trim().red}`)
     exitCode = 1
 }
 
