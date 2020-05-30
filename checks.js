@@ -2,13 +2,25 @@
 GUIDANCE FOR WRITING YOUR OWN CHECKS
 0. A check should check for a discrete, non-overlapping part of the message, and the checks should cumulatively cover every character of a succesful message
 1. expect the whole commit message as an argument
-2. return the matched part of the message if succesful, or a falsy value if unsuccesful
-3. export the functions as an array representing their order
-4. You can add an optional explanatory message in the comments object. This message will be printed if a check fails. The key must correspond exactly to the name of the failing function.
+3. Checks should look for the presence of a substring and return an object with up to three keys: verdict (bool) info (helpful message) match (the match)
+5. export the functions as an array representing their order
 */
 
-function issue_numbers() {
+function regexEscape(str) {
+    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+}
 
+function issueNumber(message, tags) {
+    const newTags = tags.map(tag => regexEscape(tag))
+    const regexString = "(" + newTags.join("|") + ")+"
+    const match = message.match(regexString)
+    const validatedMatch = match && match[0] 
+    // match() returns an array when used like this, the first element is the match
+    return {
+        match: validatedMatch,
+        verdict: !!validatedMatch,
+        info: "Some test info",
+    }
 }
 
 function command() {
@@ -19,14 +31,4 @@ function comment() {
 
 }
 
-const explanations = {
-    issue_numbers: "",
-    command: "",
-    comment: ""
-}
-
-module.exports = {
-    checks: [issue_numbers, command, comment],
-    explanations 
-}
-
+module.exports = [issueNumber, command, comment]
