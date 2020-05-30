@@ -4,26 +4,27 @@ const commitMessage = fs.readFileSync(commitPath).toString()
 
 let exitCode = 0
 
-function testRunner(tests) {
+function testRunner(checks) {
     const results = []
     const reconstructedMessage = []
-    checkContent({tests, results, reconstructedMessage})
+    checkContent({checks, results, reconstructedMessage})
     checkOrder({commitMessage, reconstructedMessage})
     exitCode && printEach(results)
     process.exit(exitCode)
 }
 
-function checkContent({tests, results, reconstructedMessage}) {
-    tests.forEach(test => {
+function checkContent({checks, results, reconstructedMessage}) {
+    checks.forEach(check => {
+        const checkName = check.name.split("-").join(" ")
         try {
-            const messagePart = test()
+            const messagePart = check(commitMessage)
             if (!messagePart) {
-                reconstructedMessage.push(`<${test.name}>`)
-                results.push(`1 Message contains ${test.name}`)    
+                reconstructedMessage.push(`<${checkName}>`)
+                results.push(`1 Message does not contain ${checkName}`)    
                 exitCode = 1
             } else {
                 reconstructedMessage.push(messagePart)
-                results.push(`0 Message does not contain ${test.name}`)
+                results.push(`0 Message contains ${checkName}`)
             }
         } catch {
             exitCode = 1;
@@ -53,4 +54,11 @@ function printEach(arguments) {
 }
 
 
-testRunner('tests')
+// testRunner('checks')
+
+
+// TODO: actually write some of the test functions
+// TODO: think about imports, scope, closures and mutation - do you really want all of this in one file?
+// TODO: replace ones and zeros with emojis using node package
+// TODO: colorise output using node package
+// TODO: test the tests
