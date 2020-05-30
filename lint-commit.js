@@ -1,9 +1,9 @@
 const fs = require('fs')
-const commitPath = process.argv.find(filePath => filePath === '.git/COMMIT_EDITMSG')
-const commitMessage = fs.readFileSync(commitPath).toString()
+
+const commitMessage = fs.readFileSync(process.env.HUSKY_GIT_PARAMS).toString()
 const checks = require('./checks')
-// no need for argv. process.env contains HUSKY_GIT_PARAMS
-const tags = ['[TEST-1]', '[TEST-2]'] // you would actually get these from package.json, maybe use a package to escape regex special characters
+const tags = ['[TEST-1]', '[TEST-2]'] // you would actually get these from package.json
+
 require('colors')
 const tick = "✓".bold.green
 const cross = "x".bold.red
