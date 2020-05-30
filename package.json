@@ -7,14 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "husky": {
-      "hooks": {
-          "commit-msg": "node lint-commit.js $HUSKY_GIT_PARAMS"
-      }
+    "hooks": {
+      "commit-msg": "node lint-commit.js $HUSKY_GIT_PARAMS"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "husky": "^4.2.5"
+  },
+  "dependencies": {
+    "colors": "^1.4.0"
   }
 }
