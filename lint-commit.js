@@ -19,7 +19,9 @@ function checkContent({checks, results, reconstructedMessage}) {
             const messagePart = check(commitMessage)
             if (!messagePart) {
                 reconstructedMessage.push(`<${checkName}>`)
+
                 results.push(`1 Message does not contain ${checkName}`)    
+                 // TODO: add extra messages, accessed through object like command: `\tvalid commands are x y z`, and log its output here. Key should be check.name
                 exitCode = 1
             } else {
                 reconstructedMessage.push(messagePart)
@@ -38,7 +40,7 @@ function checkOrder({commitMessage, reconstructedMessage}) {
         return
     }
     results.push('---')
-    results.push('\t0 order is incorrect')
+    results.push('0 order is incorrect')
     results.push('\texpected vs actual:')
     results.push(`\t0 ${reconstructedMessage}`)
     results.push(`\t1 ${commitMessage}`)
