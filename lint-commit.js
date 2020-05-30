@@ -2,9 +2,8 @@ const fs = require('fs')
 const commitPath = process.argv.find(filePath => filePath === '.git/COMMIT_EDITMSG')
 const commitMessage = fs.readFileSync(commitPath).toString()
 
-let exitCode = 0
-
 function testRunner(checks) {
+    let exitCode = 0
     const results = []
     const reconstructedMessage = []
     checkContent({checks, results, reconstructedMessage})
@@ -40,11 +39,10 @@ function checkOrder({commitMessage, reconstructedMessage}) {
     }
     results.push('---')
     results.push('\t0 order is incorrect')
-    results.push('\texpected vs actual')
+    results.push('\texpected vs actual:')
     results.push(`\t0 ${reconstructedMessage}`)
     results.push(`\t1 ${commitMessage}`)
     exitCode = 1
-    return
 }
 
 function printEach(arguments) {
