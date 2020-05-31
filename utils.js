@@ -11,11 +11,15 @@ function getCommitMessage() {
 }
 
 function regexEscape(str) {
-    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+    const newString = str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+    if (newString !== str) {return newString}
+    throw new Error('Issue tags should be separated by square brackets')
 }
 
 function regexNumbers(str) {
-    return str.replace('-n\\]', '-[0-9]+\]')
+    const newString = str.replace('-n\\]', '-[0-9]+\]')
+    if (newString !== str) {return newString}
+    throw new Error('Issue tags should end with the substring "-n]"')
 }
 
 function regexListItem(str) {

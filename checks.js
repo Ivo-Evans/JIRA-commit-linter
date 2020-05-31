@@ -10,6 +10,13 @@ const utils = require('./utils')
 
 
 function issueNumber(message, tags) {
+    if (!tags) {
+        return {
+            match: null,
+            verdict: false,
+            info: "tags must be specified in your package.json under the field \'jira\' as an array of strings. Each string should contain a tag formatted like '[JIRA-n]', beginning with your project key and ending with n"
+        }
+    }
     const newTags = tags.map(tag => { 
         const plainTags = utils.regexEscape(tag)
         const numericTags = utils.regexNumbers(plainTags)
@@ -26,12 +33,8 @@ function issueNumber(message, tags) {
     }
 }
 
-function command() {
+function commands() {
 
 }
 
-function comment() {
-
-}
-
-module.exports = [issueNumber, command, comment]
+module.exports = [issueNumber, commands]

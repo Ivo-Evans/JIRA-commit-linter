@@ -55,8 +55,9 @@ function checkOrder({commitMessage, reconstructedMessage}) {
     results.push("")
     results.push(`${cross} Final string does not match`)
     results.push("")
-    results.push(`\texpected: ${newMessage.trim()}`.green)
-    results.push(`\t     got: ${commitMessage.trim()}`.red)
+    results.push("\tBased on analysis of the message,")
+    results.push(`\tExpected: ${newMessage.trim()}`.green)
+    results.push(`\tReceived: ${commitMessage.trim()}`.red)
     results.push("")
     exitCode = 1
 }
@@ -72,7 +73,5 @@ testRunner(checks)
 
 
 // TODO: actually write some of the check functions
-// TODO: think about imports, scope, closures and mutation - do you really want all of this in one file?
-// TODO: replace ones and zeros with emojis using node package
-// TODO: colorise output using node package
 // TODO: test the tests
+// TODO: be more stringent about scope and purity. Think of the tests!
