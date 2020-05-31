@@ -12,7 +12,8 @@ const utils = require('./utils')
 function issueNumber(message, tags) {
     const newTags = tags.map(tag => { 
         const plainTags = utils.regexEscape(tag)
-        return utils.regexNumbers(plainTags)
+        const numericTags = utils.regexNumbers(plainTags)
+        return utils.regexListItem(numericTags)
     }) 
     const regexString = "(" + newTags.join("|") + ")+"
     const match = message.match(regexString)

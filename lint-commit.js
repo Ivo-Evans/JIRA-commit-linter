@@ -71,7 +71,7 @@ function printEach(arguments) {
 testRunner(checks)
 
 
-// TODO: actually write some of the test functions
+// TODO: actually write some of the check functions
 // TODO: think about imports, scope, closures and mutation - do you really want all of this in one file?
 // TODO: replace ones and zeros with emojis using node package
 // TODO: colorise output using node package

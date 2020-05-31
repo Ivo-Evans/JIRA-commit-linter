@@ -18,4 +18,8 @@ function regexNumbers(str) {
     return str.replace('-n\\]', '-[0-9]+\]')
 }
 
-module.exports = {getFromJson, getCommitMessage, regexEscape, regexNumbers}
+function regexListItem(str) {
+    return str + "[ ,]*"
+}
+
+module.exports = {getFromJson, getCommitMessage, regexEscape, regexNumbers, regexListItem}
