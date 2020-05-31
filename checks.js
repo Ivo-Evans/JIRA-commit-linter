@@ -6,20 +6,19 @@ GUIDANCE FOR WRITING YOUR OWN CHECKS
 5. export the functions as an array representing their order
 */
 
-function regexEscape(str) {
-    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-}
+const utils = require('./utils')
+
 
 function issueNumber(message, tags) {
-    const newTags = tags.map(tag => regexEscape(tag))
+    const newTags = tags.map(tag => { return utils.regexEscape(tag)}) // after regexEscape you should use replace to put regex back in, replacing -n\] with -[0-9]+\] 
     const regexString = "(" + newTags.join("|") + ")+"
     const match = message.match(regexString)
     const validatedMatch = match && match[0] 
-    // match() returns an array when used like this, the first element is the match
+    // match() returns an array when used like this. The first element is the match
     return {
         match: validatedMatch,
         verdict: !!validatedMatch,
-        info: "Some test info",
+        info: "Put the rules for issue numbers here",
     }
 }
 

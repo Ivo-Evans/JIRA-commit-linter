@@ -1,8 +1,10 @@
-const fs = require('fs')
+const utils = require('./utils')
 
-const commitMessage = fs.readFileSync(process.env.HUSKY_GIT_PARAMS).toString()
+const commitMessage = utils.getCommitMessage()
+const tags = utils.getFromJson()
+
 const checks = require('./checks')
-const tags = ['[TEST-1]', '[TEST-2]'] // you would actually get these from package.json, and only get one, [TEST-n]
+// there is also a prepare-commit hook. You could check branch name and add issues is you find them, or just tell users to use a package for that. 
 
 require('colors')
 const tick = "✓".bold.green
@@ -51,9 +53,11 @@ function checkOrder({commitMessage, reconstructedMessage}) {
     results.push("")
     results.push('---')
     results.push("")
-    results.push(`${cross} Final commit does not match`)
-    results.push(`\texpected |${newMessage.trim().green}`)
-    results.push(`\tactual   |${commitMessage.trim().red}`)
+    results.push(`${cross} Final string does not match`)
+    results.push("")
+    results.push(`\texpected: ${newMessage.trim()}`.green)
+    results.push(`\t     got: ${commitMessage.trim()}`.red)
+    results.push("")
     exitCode = 1
 }
 
