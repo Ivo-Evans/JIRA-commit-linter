@@ -14,4 +14,8 @@ function regexEscape(str) {
     return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 }
 
-module.exports = {getFromJson, getCommitMessage, regexEscape}
+function regexNumbers(str) {
+    return str.replace('-n\\]', '-[0-9]+\]')
+}
+
+module.exports = {getFromJson, getCommitMessage, regexEscape, regexNumbers}

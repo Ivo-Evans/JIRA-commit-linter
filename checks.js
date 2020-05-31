@@ -10,12 +10,15 @@ const utils = require('./utils')
 
 
 function issueNumber(message, tags) {
-    const newTags = tags.map(tag => { return utils.regexEscape(tag)}) // after regexEscape you should use replace to put regex back in, replacing -n\] with -[0-9]+\] 
+    const newTags = tags.map(tag => { 
+        const plainTags = utils.regexEscape(tag)
+        return utils.regexNumbers(plainTags)
+    }) 
     const regexString = "(" + newTags.join("|") + ")+"
     const match = message.match(regexString)
     const validatedMatch = match && match[0] 
     // match() returns an array when used like this. The first element is the match
-    return {
+    return { 
         match: validatedMatch,
         verdict: !!validatedMatch,
         info: "Put the rules for issue numbers here",
