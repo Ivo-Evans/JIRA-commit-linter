@@ -1,3 +1,9 @@
+
+
+[![codecov](https://codecov.io/gh/Ivo-Evans/JIRA-commit-linter/branch/master/graph/badge.svg)](https://codecov.io/gh/Ivo-Evans/JIRA-commit-linter)
+[![Build Status](https://travis-ci.org/Ivo-Evans/JIRA-commit-linter.svg?branch=master)](https://travis-ci.org/Ivo-Evans/JIRA-commit-linter)
+
+
 jira-commmit-linter
 
 An opinionated commit linter for the Jira smart-commit syntax.
