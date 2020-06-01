@@ -2,3 +2,4 @@ tests/
 .gitignore
 .travis.yml
 coverage/
+design-considerations

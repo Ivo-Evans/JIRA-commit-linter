@@ -61,7 +61,6 @@ function testRunner(criteria) {
     checkContent(criteria)
     checkOrder({commitMessage, reconstructedMessage})
     if (exitCode) { utils.printEach(results) }
-    console.log('called', exitCode)
     process.exit(exitCode)
 }
 
@@ -73,3 +72,6 @@ testRunner(checks)
 // TODO: actually write some of the check functions
 // TODO: test the tests
 // TODO: be more stringent about scope and purity. Think of the tests!
+// TODO: if you can't do better for bad matches than nothing, get rid of verdict.verdict and just use verdict.match
+// TODO: add list of valid commands to package.json
+// TODO: find out if square brackets are necessary in smart commits 

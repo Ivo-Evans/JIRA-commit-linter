@@ -12,7 +12,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "node lint-commit.js"
+      "commit-msg": "node src/lint-commit.js"
     }
   },
   "keywords": [],

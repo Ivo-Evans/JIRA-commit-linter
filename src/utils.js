@@ -1,13 +1,21 @@
 const fs = require('fs');
 
 function getFromJson() {
-    const packageJson = JSON.parse(fs.readFileSync('./package.json'));
-    return packageJson.jira;
+    try {
+        const packageJson = JSON.parse(fs.readFileSync('./package.json'));
+        return packageJson.jira;
+    } catch {
+        throw new Error('Could not find a "jira" field in your package.json')
+    }
 }
 
 function getCommitMessage() {
-    const filePath = process.env.HUSKY_GIT_PARAMS;
-    return fs.readFileSync(filePath).toString();
+    try {
+        const filePath = process.env.HUSKY_GIT_PARAMS;
+        return fs.readFileSync(filePath).toString();
+    } catch {
+        throw new Error('Husky or jira-commit-lint could not find your commit message - are you using the right hook?')
+    }
 }
 
 function regexEscape(str) {
