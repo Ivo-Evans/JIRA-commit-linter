@@ -5,8 +5,7 @@
   "main": "index.js",
   "jira": [
     "[TEST-n]",
-    "[JEST-n]",
-    "[JIRA-n]"
+    "[JEST-n]"
   ],
   "scripts": {
     "test": "jest"

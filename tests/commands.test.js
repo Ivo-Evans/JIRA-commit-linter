@@ -5,8 +5,8 @@ test('allows a commit with a comment command', () => {
     expect(verdict.match).toBe('#comment this is a comment')
 })
 
-test('does not return the issue number', () => {
-        // for this to pass JIRA-1 must be in package.json. Brittle
+test('does not return the issue number if the issue number is at the beginning', () => {
+    // should allow issue numbers in comments
     const verdict = commands('[JIRA-1] #comment this is a comment')
     expect(verdict.match).toBe('#comment this is a comment')
     
