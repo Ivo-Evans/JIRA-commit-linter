@@ -6,46 +6,50 @@ GUIDANCE FOR WRITING YOUR OWN CHECKS
 4. export the functions as an array representing their order
 */
 
-const utils = require('./utils')
-
+const utils = require('./utils');
 
 function issueNumber(message, tags) {
     if (!tags) {
         return {
             match: null,
             verdict: false,
-            info: "tags must be specified in your package.json under the field \'jira\' as an array of strings. Each string should contain a tag formatted like '[JIRA-n]', beginning with your project key and ending with n"
-        }
+            info:
+                "tags must be specified in your package.json under the field 'jira' as an array of strings. Each string should contain a tag formatted like '[JIRA-n]', beginning with your project key and ending with n",
+        };
     }
-    const newTags = tags.map(tag => { 
-        const plainTags = utils.regexEscape(tag)
-        const numericTags = utils.regexNumbers(plainTags)
-        return utils.regexListItem(numericTags)
-    }) 
-    const regexString = "(" + newTags.join("|") + ")+"
-    const match = message.match(regexString)
-    const validatedMatch = match && match[0] 
+    const newTags = tags.map((tag) => {
+        const plainTags = utils.regexEscape(tag);
+        const numericTags = utils.regexNumbers(plainTags);
+        return utils.regexListItem(numericTags);
+    });
+    const regexString = '(' + newTags.join('|') + ')+';
+    const match = message.match(regexString);
+    const validatedMatch = match && match[0];
     // match() returns an array when used like this. The first element is the match
-    return { 
+    return {
         match: validatedMatch,
         verdict: !!validatedMatch,
-        info: "Put the rules for issue numbers here",
-    }
+        info: 'Put the rules for issue numbers here',
+    };
 }
 
 function commands(message) {
-    const match = message.match(/#.+/)
-        return {
-            match,
-            verdict: !!match,
-            info: `
-            You must provide at least one command, starting with #. 
+    try {
+        match = message.match(/#.+/)[0];
+    } catch {
+        match = null;
+    }
+    return {
+        match,
+        verdict: !!match,
+        info: `
+            You must provide at least one command, starting with #
             If all you want to do is write a comment, your command should be #comment (followed by your comment). 
             If you want to write a comment and perform an action, you can omit #comment and just name the action, like 
             \t"[JIRA-214] #done add final tests for 214". 
             Two common actions are #in-progress and #done.
-            `
-    }
+            `,
+    };
 }
 
-module.exports = [issueNumber, commands]
+module.exports = [issueNumber, commands];
