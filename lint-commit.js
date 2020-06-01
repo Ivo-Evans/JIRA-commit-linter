@@ -1,3 +1,4 @@
+const { noCase } = require('change-case')
 const utils = require('./utils')
 
 const commitMessage = utils.getCommitMessage()
@@ -7,30 +8,23 @@ const checks = require('./checks')
 // there is also a prepare-commit hook. You could check branch name and add issues is you find them, or just tell users to use a package for that. 
 
 require('colors')
+
 const tick = "✓".bold.green
 const cross = "x".bold.red
 
 let exitCode = 0
 const results = [""]
 const reconstructedMessage = []
-const { noCase } = require('change-case')
 
-function testRunner(checks) {
-    checkContent({checks, results, reconstructedMessage})
-    checkOrder({commitMessage, reconstructedMessage})
-    exitCode && printEach(results)
-    process.exit(exitCode)
-}
-
-function checkContent({checks, results, reconstructedMessage}) {
-    checks.forEach(check => {
-        const checkName = noCase(check.name)
+function checkContent(criteria) {
+    criteria.forEach(criterion => {
+        const checkName = noCase(criterion.name)
         try {
-            const verdict = check(commitMessage, tags)
+            const verdict = criterion(commitMessage, tags)
             if (!verdict.verdict) {
                 reconstructedMessage.push(`<${checkName}>`)
                 results.push(`${cross} Message does not contain ${checkName}`)
-                verdict.info && results.push("\t" + verdict.info)    
+                if (verdict.info) { results.push(`\t${verdict.info}`) }
                 exitCode = 1
             } else {
                 reconstructedMessage.push(verdict.match)
@@ -38,13 +32,13 @@ function checkContent({checks, results, reconstructedMessage}) {
             }
         } catch(error) {
             reconstructedMessage.push(`<${checkName}>`)
-            results.push(`${cross} Parsing error: ${error}`) // if command but no message, throw an error; if no command, throw a different error
+            results.push(`${cross} Parsing error: ${error}`) 
             exitCode = 1;
         }
     })
 }
 
-function checkOrder({commitMessage, reconstructedMessage}) {
+function checkOrder() {
     const newMessage = reconstructedMessage.join("")
     if (commitMessage.trim() === newMessage.trim()) {
         results.push(`${tick} commit order is correct`)
@@ -62,11 +56,15 @@ function checkOrder({commitMessage, reconstructedMessage}) {
     exitCode = 1
 }
 
-function printEach(arguments) {
-    arguments.forEach(argument => {
-        console.log("\t" + argument)
-    })
+
+function testRunner(criteria) {
+    checkContent(criteria)
+    checkOrder({commitMessage, reconstructedMessage})
+    if (exitCode) { utils.printEach(results) }
+    console.log('called', exitCode)
+    process.exit(exitCode)
 }
+
 
 
 testRunner(checks)

@@ -14,7 +14,6 @@ test('issueNumber approves multiple valid tags with different numbers', () => {
     expect(verdict.match).toBe('[JIRA-1], [JIRA-5000000000000] ')
 })
 
-
 test('issueNumber approves multiple valid tags with different keys', () => {
     const verdict = issueNumber(
         '[JIRA-2], [TEST-4] #comment my comment', ['[JIRA-n]', '[TEST-n]']
